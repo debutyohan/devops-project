@@ -11,7 +11,9 @@ jobs:
       - run: ls -rtl
       - uses: actions/cache/save@v3
         with:
-          path: node_modules
+          path: |
+            node_modules
+            /home/runner/.cache/Cypress
           key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
   test:
     needs: build
@@ -20,7 +22,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/cache/restore@v3
         with:
-          path: node_modules
+          path: |
+            node_modules
+            /home/runner/.cache/Cypress
           key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
       - run: npm run e2e:headless
       - uses: actions/upload-artifact@v3
