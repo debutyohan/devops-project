@@ -8,4 +8,4 @@ jobs:
       - uses: actions/checkout@v3
       - run: npm i
       - run: npm run build
-      - run: npm e2e:headless
+      - run: npm run e2e:headless
