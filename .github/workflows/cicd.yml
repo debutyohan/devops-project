@@ -2,12 +2,25 @@ name: my-actions
 run-name: ${{ github.actor }} is learning GitHub Actions
 on: [push]
 jobs:
-  build-next-app:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - run: npm i
       - run: npm run build
+      - uses: actions/cache@v3
+        with:
+          path: /node_modules
+          key: path-files
+  tests:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: /node_modules
+          key: path-files
       - run: npm run e2e:headless
       - uses: actions/upload-artifact@v3
         if: ${{ always() }}
