@@ -6,15 +6,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - run: npm i
+      - run: npm run build
+      - run: ls -rtl
       - uses: actions/cache/save@v3
         with:
           path: |
             node_modules
             /home/runner/.cache/Cypress
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-      - run: npm i
-      - run: npm run build
-      - run: ls -rtl
+          key: ${{ runner.os }}-path-file-cache }}
   test:
     needs: build
     runs-on: ubuntu-latest
@@ -25,7 +25,7 @@ jobs:
           path: |
             node_modules
             /home/runner/.cache/Cypress
-          key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-path-file-cache }}
       - run: npm run e2e:headless
       - uses: actions/upload-artifact@v3
         if: ${{ always() }}
