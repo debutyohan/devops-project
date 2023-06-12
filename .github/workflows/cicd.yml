@@ -10,6 +10,7 @@ jobs:
       - run: npm run build
       - run: npm run e2e:headless
       - uses: actions/upload-artifact@v3
+        if: ${{ always() }}
         with:
-          name: video-cypress-test
-          path: cypress/videos/app.cy.ts.mp4
+          name: videos-cypress-tests
+          path: cypress/videos
