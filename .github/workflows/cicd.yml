@@ -2,9 +2,10 @@ name: my-actions
 run-name: ${{ github.actor }} is learning GitHub Actions
 on: [push]
 jobs:
-  check-bats-version:
+  build-next-app:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - run: npm i
       - run: npm run build
+      - run: npm e2e:headless
