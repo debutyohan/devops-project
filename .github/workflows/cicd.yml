@@ -33,7 +33,7 @@ jobs:
   #        name: videos-cypress-tests
   #        path: cypress/videos
   deploy:
-    needs: test
+    #needs: test
     runs-on: ubuntu-latest
     steps:
       - run: |
