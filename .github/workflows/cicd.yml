@@ -67,7 +67,7 @@ jobs:
   #         push: true
   #         tags: ghcr.io/debutyohan/devops-project/nodejs-my-website:latest
   deploy-docker:
-    needs: build-push-docker
+    # needs: build-push-docker
     runs-on: ubuntu-latest
     steps:
       - run: |
