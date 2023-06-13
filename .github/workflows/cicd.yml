@@ -2,50 +2,64 @@ name: my-actions
 run-name: ${{ github.actor }} is learning GitHub Actions
 on: [push]
 jobs:
-  build:
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - run: npm i
+  #     - run: npm run build
+  #     - run: ls -rtl
+  #     - uses: actions/cache/save@v3
+  #       with:
+  #         path: |
+  #           node_modules
+  #           /home/runner/.cache/Cypress
+  #         key: ${{ runner.os }}-path-file-cache }}
+  # test:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/cache/restore@v3
+  #       with:
+  #         path: |
+  #           node_modules
+  #           /home/runner/.cache/Cypress
+  #         key: ${{ runner.os }}-path-file-cache }}
+  #     - run: npm run e2e:headless
+  #     - uses: actions/upload-artifact@v3
+  #       if: ${{ always() }}
+  #       with:
+  #         name: videos-cypress-tests
+  #         path: cypress/videos
+  # deploy:
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - run: |
+  #         install -m 600 -D /dev/null ~/.ssh/id_rsa
+  #         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+  #         ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+  #     - run: |
+  #         ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
+  #         cd ${{ secrets.WORK_DIR }} && \
+  #         sudo git pull && \
+  #         sudo npm i && \
+  #         sudo npm run build && \
+  #         sudo pm2 restart npm && \
+  #         exit"
+  #     - run: rm -rf ~/.ssh
+  build-docker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: npm i
-      - run: npm run build
-      - run: ls -rtl
-      - uses: actions/cache/save@v3
+      - name : Login
+        uses : docker/login-action@v2
         with:
-          path: |
-            node_modules
-            /home/runner/.cache/Cypress
-          key: ${{ runner.os }}-path-file-cache }}
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/cache/restore@v3
+          registry : ghcr.io
+          username : ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name : Build and Push
+        uses : docker/build-push-action@v4
         with:
-          path: |
-            node_modules
-            /home/runner/.cache/Cypress
-          key: ${{ runner.os }}-path-file-cache }}
-      - run: npm run e2e:headless
-      - uses: actions/upload-artifact@v3
-        if: ${{ always() }}
-        with:
-          name: videos-cypress-tests
-          path: cypress/videos
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-      - run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "\
-          cd ${{ secrets.WORK_DIR }} && \
-          sudo git pull && \
-          sudo npm i && \
-          sudo npm run build && \
-          sudo pm2 restart npm && \
-          exit"
-      - run: rm -rf ~/.ssh
+          push: true
+          tags: ghcr.io/debutyohan/nodejs-my-website:latest
