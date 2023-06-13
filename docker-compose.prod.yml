@@ -1,0 +1,5 @@
+services:
+  next:
+    image: docker pull ghcr.io/debutyohan/devops-project/nodejs-my-website:latest
+  ports :
+    - 3000:3000
