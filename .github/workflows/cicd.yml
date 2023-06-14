@@ -50,6 +50,8 @@ jobs:
   #         exit"
   #     - run: rm -rf ~/.ssh
   build-push-docker-dev:
+    needs: test
+    if: ${{ github.ref == 'refs/heads/dev' }}
     runs-on: ubuntu-latest
     environment: development
     permissions:
@@ -57,19 +59,19 @@ jobs:
       packages: write
     steps:
       - name : Login
-        if: ${{ github.ref == 'refs/heads/dev' }}
         uses : docker/login-action@v2
         with:
           registry : ghcr.io
           username : ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name : Build and Push
-        if: ${{ github.ref == 'refs/heads/dev' }}
         uses : docker/build-push-action@v4
         with:
           push: true
           tags: ghcr.io/debutyohan/devops-project/nodejs-my-website:dev
   build-push-docker-prod:
+    needs: test
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     environment: production
     permissions:
@@ -77,14 +79,12 @@ jobs:
       packages: write
     steps:
       - name : Login
-        if: ${{ github.ref == 'refs/heads/main' }}
         uses : docker/login-action@v2
         with:
           registry : ghcr.io
           username : ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name : Build and Push
-        if: ${{ github.ref == 'refs/heads/main' }}
         uses : docker/build-push-action@v4
         with:
           push: true
