@@ -16,7 +16,7 @@ jobs:
             /home/runner/.cache/Cypress
           key: ${{ runner.os }}-path-file-cache }}
   test:
-    needs: build
+    needs: [build, build-push-docker]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
