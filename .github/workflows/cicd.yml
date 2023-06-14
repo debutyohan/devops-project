@@ -16,7 +16,7 @@ jobs:
             /home/runner/.cache/Cypress
           key: ${{ runner.os }}-path-file-cache }}
   test:
-    needs: [build, build-push-docker]
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -49,8 +49,27 @@ jobs:
   #         sudo pm2 restart npm && \
   #         exit"
   #     - run: rm -rf ~/.ssh
-  build-push-docker:
+  build-push-docker-dev:
     runs-on: ubuntu-latest
+    environment: development
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name : Login
+        uses : docker/login-action@v2
+        with:
+          registry : ghcr.io
+          username : ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name : Build and Push
+        uses : docker/build-push-action@v4
+        with:
+          push: true
+          tags: ghcr.io/debutyohan/devops-project/nodejs-my-website:dev
+  build-push-docker-prod:
+    runs-on: ubuntu-latest
+    environnement: production
     permissions:
       contents: read
       packages: write
