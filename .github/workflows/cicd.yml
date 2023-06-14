@@ -69,7 +69,7 @@ jobs:
           tags: ghcr.io/debutyohan/devops-project/nodejs-my-website:dev
   build-push-docker-prod:
     runs-on: ubuntu-latest
-    environnement: production
+    environment: production
     permissions:
       contents: read
       packages: write
