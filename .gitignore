@@ -40,3 +40,7 @@ next-env.d.ts
 
 # .github
 /.github/workflows/learn-github-actions.yml
+
+/docker/db
+
+/php-app

@@ -1,0 +1,21 @@
+services:
+  next:
+    build: .
+    ports :
+      - 3000:3000
+    volumes:
+      - ./:/app # Mappe/Synchronise le contenu en local (chemin local) avec le contenu du conteneur (chemin conteneur)
+    command: "npm run dev" # override de la commande à lancer CMD du fichier Dockerfile
+  db:
+    image: mariadb:10.6
+    environment: # Variables d'environnement
+      MARIADB_DATABASE: cube
+      MARIADB_USER: cube
+      MARIADB_PASSWORD: cube
+      MARIADB_RANDOM_ROOT_PASSWORD: "yes"
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
