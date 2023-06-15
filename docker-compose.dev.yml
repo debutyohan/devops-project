@@ -2,7 +2,7 @@ services:
   next:
     image: ghcr.io/debutyohan/devops-project/nodejs-my-website:dev
     ports:
-      - 3000:3000
+      - 3001:3000
   db:
     image: mariadb:10.6
     environment: # Variables d'environnement
@@ -15,4 +15,4 @@ services:
   adminer:
     image: adminer
     ports:
-      - 8080:8080
+      - 8081:8080
