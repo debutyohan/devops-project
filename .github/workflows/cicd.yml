@@ -50,6 +50,8 @@ jobs:
   #         exit"
   #     - run: rm -rf ~/.ssh
   build-push-docker-dev:
+    needs: test
+    if: ${{ github.ref == 'refs/heads/dev' }}
     runs-on: ubuntu-latest
     environment: development
     if: ${{ github.ref == 'refs/heads/dev' }}
@@ -70,6 +72,8 @@ jobs:
           push: true
           tags: ghcr.io/debutyohan/devops-project/nodejs-my-website:dev
   build-push-docker-prod:
+    needs: test
+    if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     environment: production
     needs: test
